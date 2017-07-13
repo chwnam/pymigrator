@@ -235,7 +235,7 @@ class AutoIncrementMixin(object):
         self.next_id += 1
 
 
-class AutoIncrementDictTable(AutoIncrementMixin, DictTable):
+class AutoIncrementDictTable(DictTable, AutoIncrementMixin):
     def __init__(self, header, table_name='', ai_field=None, ai_begin=1):
         """
         :param header: header columns. Include all fields
