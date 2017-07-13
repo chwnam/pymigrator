@@ -652,7 +652,3 @@ class TermRelationShipsAdaptor(BaseAdaptor):
             'term_taxonomy_id',
             'term_order',
         ]
-
-    @classmethod
-    def get_ai_field(cls):
-        return 'object_id'
