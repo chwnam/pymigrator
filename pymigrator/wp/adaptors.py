@@ -186,6 +186,38 @@ class PostsAdaptor(BaseAdaptor):
     def comment_count(self, value):
         self.dict_obj['comment_count'] = value
 
+    @classmethod
+    def get_header(cls):
+        return [
+            'ID',
+            'post_author',
+            'post_date',
+            'post_date_gmt',
+            'post_content',
+            'post_title',
+            'post_excerpt',
+            'post_status',
+            'comment_status',
+            'ping_status',
+            'post_password',
+            'post_name',
+            'to_ping',
+            'pinged',
+            'post_modified',
+            'post_modified_gmt',
+            'post_content_filtered',
+            'post_parent',
+            'guid',
+            'menu_order',
+            'post_type',
+            'post_mime_type',
+            'comment_count',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'ID'
+
 
 class PostMetaAdaptor(BaseAdaptor):
     @property
@@ -219,6 +251,19 @@ class PostMetaAdaptor(BaseAdaptor):
     @meta_value.setter
     def meta_value(self, value):
         self.dict_obj['meta_value'] = value
+
+    @classmethod
+    def get_header(cls):
+        return [
+            'meta_id',
+            'post_id',
+            'meta_key',
+            'meta_value',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'meta_id'
 
 
 class UserAdaptor(BaseAdaptor):
@@ -302,6 +347,25 @@ class UserAdaptor(BaseAdaptor):
     def display_name(self, value):
         self.dict_obj['display_name'] = value
 
+    @classmethod
+    def get_header(cls):
+        return [
+            'ID',
+            'user_login',
+            'user_pass',
+            'user_nicename',
+            'user_email',
+            'user_url',
+            'user_registered',
+            'user_activation_key',
+            'user_status',
+            'display_name',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'ID'
+
 
 class UserMetaAdaptor(BaseAdaptor):
     @property
@@ -335,6 +399,19 @@ class UserMetaAdaptor(BaseAdaptor):
     @meta_value.setter
     def meta_value(self, value):
         self.dict_obj['meta_value'] = value
+
+    @classmethod
+    def get_header(cls):
+        return [
+            'umeta_id',
+            'user_id',
+            'meta_key',
+            'meta_key',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'umeta_id'
 
 
 class OptionsAdaptor(BaseAdaptor):
@@ -370,6 +447,19 @@ class OptionsAdaptor(BaseAdaptor):
     def autoload(self, value):
         self.dict_obj['autoload'] = value
 
+    @classmethod
+    def get_header(cls):
+        return [
+            'option_id',
+            'option_name',
+            'option_value',
+            'autoload',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'option_id'
+
 
 class TermsAdaptor(BaseAdaptor):
     @property
@@ -404,6 +494,19 @@ class TermsAdaptor(BaseAdaptor):
     def term_group(self, value):
         self.dict_obj['term_group'] = value
 
+    @classmethod
+    def get_header(cls):
+        return [
+            'term_id',
+            'name',
+            'slug',
+            'term_group',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'term_id'
+
 
 class TermMetaAdaptor(BaseAdaptor):
     @property
@@ -437,6 +540,19 @@ class TermMetaAdaptor(BaseAdaptor):
     @meta_value.setter
     def meta_value(self, value):
         self.dict_obj['meta_value'] = value
+
+    @classmethod
+    def get_header(cls):
+        return [
+            'meta_id',
+            'term_id',
+            'meta_key',
+            'meta_value',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'meta_id'
 
 
 class TermTaxonomyAdaptor(BaseAdaptor):
@@ -488,6 +604,21 @@ class TermTaxonomyAdaptor(BaseAdaptor):
     def count(self, value):
         self.dict_obj['count'] = value
 
+    @classmethod
+    def get_header(cls):
+        return [
+            'term_taxonomy_id',
+            'term_id',
+            'taxonomy',
+            'description',
+            'parent',
+            'count',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'term_taxonomy_id'
+
 
 class TermRelationShipsAdaptor(BaseAdaptor):
     @property
@@ -513,3 +644,15 @@ class TermRelationShipsAdaptor(BaseAdaptor):
     @term_order.setter
     def term_order(self, value):
         self.dict_obj['term_order'] = value
+
+    @classmethod
+    def get_header(cls):
+        return [
+            'object_id',
+            'term_taxonomy_id',
+            'term_order',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'object_id'
