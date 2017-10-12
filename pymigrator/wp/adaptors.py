@@ -269,11 +269,11 @@ class PostMetaAdaptor(BaseAdaptor):
 class UserAdaptor(BaseAdaptor):
     @property
     def id(self):
-        return self.dict_obj['id']
+        return self.dict_obj['ID']
 
     @id.setter
     def id(self, value):
-        self.dict_obj['id'] = value
+        self.dict_obj['ID'] = value
 
     @property
     def user_login(self):
