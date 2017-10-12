@@ -406,7 +406,7 @@ class UserMetaAdaptor(BaseAdaptor):
             'umeta_id',
             'user_id',
             'meta_key',
-            'meta_key',
+            'meta_value',
         ]
 
     @classmethod
