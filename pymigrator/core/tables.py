@@ -1,9 +1,8 @@
 import codecs
 import csv
 import os
-import sys
-
 import pymysql
+import sys
 
 from .indices import ConversionIndex
 
@@ -85,6 +84,11 @@ class DictTable(Table):
             return self.row(idx.get_target_by_origin(field_value))
         else:
             return None
+
+    def new_item(self):
+        item = dict(zip(self.headers(), [None] * len(self.headers())))
+        self.insert_row(item)
+        return self.row(-1)
 
     @staticmethod
     def load_csv(file_name, include_header=True, header=None, filter_null=True, table_name='', encoding='utf-8'):
@@ -251,10 +255,9 @@ class AutoIncrementDictTable(DictTable, AutoIncrementMixin):
         self.next_id = ai_begin
 
     def new_item(self):
-        item = dict(zip(self.headers(), [None] * len(self.headers())))
+        item = super(AutoIncrementDictTable, self).new_item()
         item[self.ai_field] = self.next_id
         self.increment_id()
-        self.insert_row(item)
         return self.row(-1)
 
     def print_dict_range(self, field_name='', stream=sys.stdout):
