@@ -36,6 +36,22 @@ class Table(object):
     def print_status(self, stream=sys.stdout):
         stream.write('%s, %d records\n' % (self.table_name, self.num_rows()))
 
+    def slice(self, size):
+        result = []
+
+        current = self.__class__(self.header, self.table_name)
+
+        for idx, row in enumerate(self):
+            current.insert_row(row)
+            if current.num_rows() == size:
+                result.append(current)
+                current = self.__class__(self.header, self.table_name)
+
+        if current and current.num_rows() > 0:
+            result.append(current)
+
+        return result
+
 
 class DictTable(Table):
     """
@@ -271,3 +287,24 @@ class AutoIncrementDictTable(DictTable, AutoIncrementMixin):
                     self.row(-1)[field_name]
                 )
             )
+
+    def slice(self, size):
+        result = []
+
+        if self.num_rows() > 0:
+            ai_begin = self.row(0)[self.ai_field]
+        else:
+            ai_begin = 1
+
+        current = self.__class__(self.header, self.table_name, self.ai_field, ai_begin)
+
+        for idx, row in enumerate(self):
+            current.insert_row(row)
+            if current.num_rows() == size:
+                result.append(current)
+                current = self.__class__(self.header, self.table_name, self.ai_field, self.row(idx)[self.ai_field])
+
+        if current and current.num_rows() > 0:
+            result.append(current)
+
+        return result
