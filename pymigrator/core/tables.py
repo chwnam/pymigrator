@@ -1,8 +1,9 @@
 import codecs
 import csv
 import os
-import pymysql
 import sys
+
+import pymysql
 
 from .indices import ConversionIndex
 
@@ -203,7 +204,7 @@ class DictTable(Table):
 
     @staticmethod
     def get_mysql_table_header_query(db, table):
-        q = 'SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA={} AND TABLE_NAME={} ' + \
+        q = 'SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=\'{}\' AND TABLE_NAME=\'{}\' ' + \
             'ORDER BY ORDINAL_POSITION'
 
         return q.format(pymysql.escape_string(db), pymysql.escape_string(table))
