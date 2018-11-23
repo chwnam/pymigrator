@@ -224,7 +224,7 @@ class PostsAdaptor(BaseAdaptor):
             zip(
                 cls.get_header(),
                 [
-                    '',  # ID
+                    0,  # ID
                     '0',  # post_author
                     '0000-00-00 00:00:00',  # post_date
                     '0000-00-00 00:00:00',  # post_date_gmt
@@ -405,7 +405,7 @@ class UserAdaptor(BaseAdaptor):
             zip(
                 cls.get_header(),
                 [
-                    '',  # ID
+                    0,  # ID
                     '',  # user_login
                     '',  # user_pass
                     '',  # user_nicename
@@ -447,7 +447,7 @@ class MultiSiteUserAdaptor(UserAdaptor):
             zip(
                 cls.get_header(),
                 [
-                    '',  # ID
+                    0,  # ID
                     '',  # user_login
                     '',  # user_pass
                     '',  # user_nicename
