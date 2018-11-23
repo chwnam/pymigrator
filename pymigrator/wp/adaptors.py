@@ -220,33 +220,35 @@ class PostsAdaptor(BaseAdaptor):
 
     @classmethod
     def get_default_values(cls):
-        return zip(
-            cls.get_header(),
-            [
-                '',  # ID
-                '0',  # post_author
-                '0000-00-00 00:00:00',  # post_date
-                '0000-00-00 00:00:00',  # post_date_gmt
-                '',  # post_content
-                '',  # post_title
-                '',  # post_excerpt
-                'publish',  # post_status
-                'open',  # comment_status
-                'open',  # ping_status
-                '',  # post_password
-                '',  # post_name
-                '',  # to_ping
-                '',  # pinged
-                '0000-00-00 00:00:00',  # post_modified
-                '0000-00-00 00:00:00',  # post_modified_gmt
-                '',  # post_content_filtered
-                '0',  # post_parent
-                '',  # guid
-                '0',  # menu_order
-                'post',  # post_type
-                '',  # post_mime_type
-                '0',  # comment_count
-            ]
+        return dict(
+            zip(
+                cls.get_header(),
+                [
+                    '',  # ID
+                    '0',  # post_author
+                    '0000-00-00 00:00:00',  # post_date
+                    '0000-00-00 00:00:00',  # post_date_gmt
+                    '',  # post_content
+                    '',  # post_title
+                    '',  # post_excerpt
+                    'publish',  # post_status
+                    'open',  # comment_status
+                    'open',  # ping_status
+                    '',  # post_password
+                    '',  # post_name
+                    '',  # to_ping
+                    '',  # pinged
+                    '0000-00-00 00:00:00',  # post_modified
+                    '0000-00-00 00:00:00',  # post_modified_gmt
+                    '',  # post_content_filtered
+                    '0',  # post_parent
+                    '',  # guid
+                    '0',  # menu_order
+                    'post',  # post_type
+                    '',  # post_mime_type
+                    '0',  # comment_count
+                ]
+            )
         )
 
 
@@ -399,20 +401,22 @@ class UserAdaptor(BaseAdaptor):
 
     @classmethod
     def get_default_values(cls):
-        return zip(
-            cls.get_header(),
-            [
-                '',  # ID
-                '',  # user_login
-                '',  # user_pass
-                '',  # user_nicename
-                '',  # user_email
-                '',  # user_url
-                '0000-00-00 00:00:00',  # user_registered
-                '',  # user_activation_key
-                '0',  # user_status
-                '',  # display_name
-            ]
+        return dict(
+            zip(
+                cls.get_header(),
+                [
+                    '',  # ID
+                    '',  # user_login
+                    '',  # user_pass
+                    '',  # user_nicename
+                    '',  # user_email
+                    '',  # user_url
+                    '0000-00-00 00:00:00',  # user_registered
+                    '',  # user_activation_key
+                    '0',  # user_status
+                    '',  # display_name
+                ]
+            )
         )
 
 
@@ -439,22 +443,24 @@ class MultiSiteUserAdaptor(UserAdaptor):
 
     @classmethod
     def get_default_values(cls):
-        return zip(
-            cls.get_header(),
-            [
-                '',  # ID
-                '',  # user_login
-                '',  # user_pass
-                '',  # user_nicename
-                '',  # user_email
-                '',  # user_url
-                '0000-00-00 00:00:00',  # user_registered
-                '',  # user_activation_key
-                '0',  # user_status
-                '',  # display_name
-                '0',  # spam
-                '0',  # deleted
-            ]
+        return dict(
+            zip(
+                cls.get_header(),
+                [
+                    '',  # ID
+                    '',  # user_login
+                    '',  # user_pass
+                    '',  # user_nicename
+                    '',  # user_email
+                    '',  # user_url
+                    '0000-00-00 00:00:00',  # user_registered
+                    '',  # user_activation_key
+                    '0',  # user_status
+                    '',  # display_name
+                    '0',  # spam
+                    '0',  # deleted
+                ]
+            )
         )
 
 
