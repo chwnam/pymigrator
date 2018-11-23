@@ -2,6 +2,7 @@ import codecs
 import csv
 import os
 import sys
+from copy import deepcopy
 
 import pymysql
 
@@ -9,10 +10,20 @@ from .indices import ConversionIndex
 
 
 class Table(object):
-    def __init__(self, header, table_name=''):
+    def __init__(self, header, table_name='', default_values=None):
         self.header = header
         self.table_name = table_name
         self.content = []
+
+        if not default_values:
+            default_values = {}
+        for h in set(default_values.keys()).difference(set(self.header)):
+            del default_values[h]
+        for h in self.header:
+            if h not in default_values:
+                default_values[h] = ''
+
+        self.default_values = default_values
 
     def __iter__(self):
         return self.content.__iter__()
@@ -62,8 +73,8 @@ class DictTable(Table):
     Every row is stored as a dict object.
     """
 
-    def __init__(self, header, table_name=''):
-        super(DictTable, self).__init__(header, table_name)
+    def __init__(self, header, table_name='', default_values=None):
+        super(DictTable, self).__init__(header, table_name, default_values)
         self.indices = {}
 
     def insert_row(self, table_row, check_validity=False):
@@ -73,10 +84,16 @@ class DictTable(Table):
         :return: row
         """
         if check_validity:
-            if set(table_row.keys()) != set(self.header):
-                raise ValueError("Keys are not identical.")
+            filtered_row = {}
+            for h in self.header:
+                if h in table_row:
+                    filtered_row[h] = table_row[h]
+                else:
+                    filtered_row[h] = self.default_values[h]
+        else:
+            filtered_row = table_row
 
-        self.content.append(table_row)
+        self.content.append(filtered_row)
 
     def create_index(self, index_field):
         """
@@ -103,8 +120,7 @@ class DictTable(Table):
             return None
 
     def new_item(self):
-        item = dict(zip(self.headers(), [None] * len(self.headers())))
-        self.insert_row(item)
+        self.insert_row(deepcopy(self.default_values))
         return self.row(-1)
 
     @staticmethod
@@ -257,7 +273,7 @@ class AutoIncrementMixin(object):
 
 
 class AutoIncrementDictTable(DictTable, AutoIncrementMixin):
-    def __init__(self, header, table_name='', ai_field=None, ai_begin=1):
+    def __init__(self, header, table_name='', ai_field=None, ai_begin=1, default_values=None):
         """
         :param header: header columns. Include all fields
         :param table_name: table's name
@@ -267,7 +283,7 @@ class AutoIncrementDictTable(DictTable, AutoIncrementMixin):
         """
         if ai_field not in header:
             raise ValueError('id_field not in header')
-        super(AutoIncrementDictTable, self).__init__(header, table_name)
+        super(AutoIncrementDictTable, self).__init__(header, table_name, default_values)
         self.ai_field = ai_field
         self.next_id = ai_begin
 

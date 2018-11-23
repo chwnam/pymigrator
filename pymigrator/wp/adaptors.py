@@ -218,6 +218,37 @@ class PostsAdaptor(BaseAdaptor):
     def get_ai_field(cls):
         return 'ID'
 
+    @classmethod
+    def get_default_values(cls):
+        return zip(
+            cls.get_header(),
+            [
+                '',  # ID
+                '0',  # post_author
+                '0000-00-00 00:00:00',  # post_date
+                '0000-00-00 00:00:00',  # post_date_gmt
+                '',  # post_content
+                '',  # post_title
+                '',  # post_excerpt
+                'publish',  # post_status
+                'open',  # comment_status
+                'open',  # ping_status
+                '',  # post_password
+                '',  # post_name
+                '',  # to_ping
+                '',  # pinged
+                '0000-00-00 00:00:00',  # post_modified
+                '0000-00-00 00:00:00',  # post_modified_gmt
+                '',  # post_content_filtered
+                '0',  # post_parent
+                '',  # guid
+                '0',  # menu_order
+                'post',  # post_type
+                '',  # post_mime_type
+                '0',  # comment_count
+            ]
+        )
+
 
 class PostMetaAdaptor(BaseAdaptor):
     @property
@@ -365,6 +396,66 @@ class UserAdaptor(BaseAdaptor):
     @classmethod
     def get_ai_field(cls):
         return 'ID'
+
+    @classmethod
+    def get_default_values(cls):
+        return zip(
+            cls.get_header(),
+            [
+                '',  # ID
+                '',  # user_login
+                '',  # user_pass
+                '',  # user_nicename
+                '',  # user_email
+                '',  # user_url
+                '0000-00-00 00:00:00',  # user_registered
+                '',  # user_activation_key
+                '0',  # user_status
+                '',  # display_name
+            ]
+        )
+
+
+class MultiSiteUserAdaptor(UserAdaptor):
+    @property
+    def spam(self):
+        return self.dict_obj['spam']
+
+    @spam.setter
+    def spam(self, value):
+        self.dict_obj['spam'] = value
+
+    @property
+    def deleted(self):
+        return self.dict_obj['deleted']
+
+    @deleted.setter
+    def deleted(self, value):
+        self.dict_obj['deleted'] = value
+
+    @classmethod
+    def get_header(cls):
+        return UserAdaptor.get_header() + ['spam', 'deleted']
+
+    @classmethod
+    def get_default_values(cls):
+        return zip(
+            cls.get_header(),
+            [
+                '',  # ID
+                '',  # user_login
+                '',  # user_pass
+                '',  # user_nicename
+                '',  # user_email
+                '',  # user_url
+                '0000-00-00 00:00:00',  # user_registered
+                '',  # user_activation_key
+                '0',  # user_status
+                '',  # display_name
+                '0',  # spam
+                '0',  # deleted
+            ]
+        )
 
 
 class UserMetaAdaptor(BaseAdaptor):
