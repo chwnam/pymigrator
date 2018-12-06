@@ -99,11 +99,16 @@ class DictTable(Table):
         """
         Create inner index
         """
-        idx = ConversionIndex(index_field)
-        for i in range(self.num_rows()):
-            r = self.row(i)
-            idx.set_index(r[index_field], i)
-        self.indices[index_field] = idx
+        if isinstance(index_field, str):
+            idx = ConversionIndex(index_field)
+            for i, row in enumerate(self):
+                idx.set_index(row[index_field], i)
+            self.indices[index_field] = idx
+        elif isinstance(index_field, list):
+            idx = ConversionIndex('-'.join(index_field))
+            for i, row in enumerate(self):
+                idx.set_index([row[f] for f in index_field], i)
+            self.indices[index_field] = idx
 
     def get_row_num_by_indexed_value(self, index_name, field_value):
         idx = self.indices[index_name]

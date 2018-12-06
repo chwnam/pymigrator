@@ -8,17 +8,29 @@ class ConversionIndex(object):
         self.name = index_name
 
     def set_index(self, origin_index, target_index):
-        self.o2t[origin_index] = target_index
-        self.t2o[target_index] = origin_index
+        if isinstance(origin_index, str):
+            self.o2t[origin_index] = target_index
+            self.t2o[target_index] = origin_index
+        elif isinstance(origin_index, list):
+            self.o2t['-'.join(origin_index)] = target_index
+            self.t2o[target_index] = origin_index
 
     def get_origin_by_target(self, target_index):
         return self.t2o[target_index]
 
     def is_origin_indexed(self, origin_index):
-        return origin_index in self.o2t
+        if isinstance(origin_index, str):
+            return origin_index in self.o2t
+        elif isinstance(origin_index, list):
+            return '-'.join(origin_index) in self.o2t
 
     def get_target_by_origin(self, origin_index):
-        return self.o2t[origin_index]
+        if isinstance(origin_index, str):
+            return self.o2t[origin_index]
+        elif isinstance(origin_index, list):
+            return self.o2t['-'.join(origin_index)]
+        else:
+            return None
 
     def is_target_indexed(self, target_index):
         return target_index in self.t2o
