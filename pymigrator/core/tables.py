@@ -77,7 +77,6 @@ class DictTable(Table):
     def __init__(self, header, table_name='', default_values=None):
         super(DictTable, self).__init__(header, table_name, default_values)
         self.indices = {}
-        self.collection = FieldValueGroupCollection(self)
 
     def insert_row(self, table_row, check_validity=False):
         """
