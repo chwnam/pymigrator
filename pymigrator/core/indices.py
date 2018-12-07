@@ -154,7 +154,9 @@ class FieldIndex(object):
 
             if available:
                 if dict_key:
-                    output[row[dict_key]] = idx
+                    if row[dict_key] not in output:
+                        output[row[dict_key]] = []
+                    output[row[dict_key]].append(idx)
                 else:
                     output.append(idx)
 
