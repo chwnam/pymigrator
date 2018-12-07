@@ -104,27 +104,24 @@ class FieldIndex(object):
         return self
 
     def get_index(self, name, *args):
-        keys = [key for key in args if key in self.indices[name]]
-
-        if len(keys) == 0 or name not in self.indices:
+        if len(args) == 0 or name not in self.indices:
             return None
 
         index = self.indices[name]
-        result = index[keys[0]]
+        result = index[args[0]]
 
-        for key in keys[1:]:
+        for key in args[1:]:
             result = result.intersection(index[key])
 
         return result
 
     def filter_index(self, name, filters, dict_key=None):
-        keys = [key for key in filters.keys() if key in self.indices[name]]
-        intersect = self.get_index(name, keys)
+        intersect = self.get_index(name, filters.keys())
 
         is_callable = {}
         is_regex = {}
 
-        for key in keys:
+        for key in filters:
             value = filters[key]
             is_callable[key] = isinstance(value, FunctionType) or isinstance(value, LambdaType)
             is_regex[key] = isinstance(value, _pattern_type)
@@ -137,8 +134,7 @@ class FieldIndex(object):
         for idx in intersect:
             row = self.table.row(idx)
             available = True
-            for key in keys:
-                value = filters[key]
+            for key, value in filters.items():
                 if value:
                     if is_callable:
                         available = value(idx, row)
