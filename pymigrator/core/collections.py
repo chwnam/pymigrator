@@ -68,16 +68,40 @@ class FieldValueGroupCollection(object):
 
         self.collections[name] = collection
 
-    def get_collection(self, name):
+    def get_collection(self, name, **kwargs):
         """
         이름으로 콜렉션을 찾는다.
+
         :param name:
-        :return:
+
+        :return: 키워드를 입력하지 않으면 dict 반환한다. 원래 조건대로 제작된 콜렉션 전체를 불러온다.
+                 키워드를 입력하면 제작된 콜렉션에서 한 번 더 필터링을 거친 리스트를 반환한다.
+                 키워드의 키는 반드시 테이블에 있어야 하고, 값은 반드시 필드에 존재할 수 있는 값(주로 문자열)이어야 한다.
         """
         if not self.has_collection(name):
             return None
 
-        return self.collections[name]
+        collection = self.collections[name]
+
+        if not kwargs:
+            return collection
+
+        for key, value in kwargs.items():
+            if key not in self.table.headers():
+                raise Exception('kwargs keys should be in the list.')
+            elif not value:
+                raise Exception('kwargs values cannot be None.')
+
+        filtered = []
+
+        for items in collection.values():
+            for idx in items:
+                row = self.table.row(idx)
+                for key, value in kwargs.items():
+                    if row[key] == value:
+                        filtered.append(idx)
+
+        return filtered
 
     def has_collection(self, name):
         return name in self.collections
