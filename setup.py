@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pymigrator',
-    version='2.3.0',
+    version='2.4.0',
     description='A simple tabular data converter, especially for WordPress',
     author='Changwoo Nam',
     author_email='cs.chwnam@gmail.com',
