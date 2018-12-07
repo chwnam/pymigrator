@@ -6,8 +6,7 @@ from copy import deepcopy
 
 import pymysql
 
-from .collections import FieldValueGroupCollection
-from .indices import ConversionIndex
+from .indices import ConversionIndex, FieldIndex
 
 
 class Table(object):
@@ -15,7 +14,7 @@ class Table(object):
         self.header = header
         self.table_name = table_name
         self.content = []
-        self.collection = {}
+        self.field_index = FieldIndex(self)
 
         if not default_values:
             default_values = {}
@@ -65,15 +64,6 @@ class Table(object):
             result.append(current)
 
         return result
-
-    def create_collection(self, name, **kwargs):
-        raise NotImplementedError()
-
-    def get_collection_item(self, name, field):
-        raise NotImplementedError()
-
-    def has_collection_item(self, name, field):
-        raise NotImplementedError()
 
 
 class DictTable(Table):
@@ -279,14 +269,11 @@ class DictTable(Table):
 
         return "INSERT INTO {} {} VALUES {};".format(qualified_name, fields_text, values_text)
 
-    def create_collection(self, name, **kwargs):
-        self.collection.create_collection(name, **kwargs)
+    def create_field_index(self, name, **kwargs):
+        return self.field_index.create_index(name, **kwargs)
 
-    def has_collection(self, name):
-        return self.collection.has_collection(name)
-
-    def get_collection(self, name):
-        return self.collection.get_collection(name)
+    def filter_field_index(self, name, filters, dict_key=None):
+        return self.field_index.filter_index(name, filters, dict_key)
 
 
 class AutoIncrementMixin(object):

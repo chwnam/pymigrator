@@ -1,4 +1,8 @@
 import json
+import re
+from types import FunctionType, LambdaType
+
+_pattern_type = re.compile('t').__class__
 
 
 class ConversionIndex(object):
@@ -59,3 +63,99 @@ class ConversionIndex(object):
             idx.t2o = obj['t2o']
 
         return idx
+
+
+class FieldIndex(object):
+    def __init__(self, table):
+        self.table = table
+        self.indices = {}
+
+    def create_index(self, name, **kwargs):
+        index = {}
+        keys = [key for key in kwargs.keys() if key in self.table.headers()]
+        is_callable = {}
+        is_regex = {}
+
+        for key in keys:
+            index[key] = []
+            value = kwargs[key]
+            is_callable[key] = isinstance(value, FunctionType) or isinstance(value, LambdaType)
+            is_regex[key] = isinstance(value, _pattern_type)
+
+        for idx, row in enumerate(self.table):
+            for key in keys:
+                value = kwargs[key]
+                if value:
+                    if is_callable:
+                        index_available = value(idx, row)
+                    elif is_regex:
+                        index_available = bool(value.match(row[key]))
+                    else:
+                        index_available = row[key] == value
+                    if not index_available:
+                        continue
+                index[key].append(idx)
+
+        for key in keys:
+            index[key] = set(index[key])
+
+        self.indices[name] = index
+
+        return self
+
+    def get_index(self, name, *args):
+        keys = [key for key in args if key in self.indices[name]]
+
+        if len(keys) == 0 or name not in self.indices:
+            return None
+
+        index = self.indices[name]
+        result = index[keys[0]]
+
+        for key in keys[1:]:
+            result = result.intersection(index[key])
+
+        return result
+
+    def filter_index(self, name, filters, dict_key=None):
+        keys = [key for key in filters.keys() if key in self.indices[name]]
+        intersect = self.get_index(name, keys)
+
+        is_callable = {}
+        is_regex = {}
+
+        for key in keys:
+            value = filters[key]
+            is_callable[key] = isinstance(value, FunctionType) or isinstance(value, LambdaType)
+            is_regex[key] = isinstance(value, _pattern_type)
+
+        if dict_key:
+            output = {}
+        else:
+            output = []
+
+        for idx in intersect:
+            row = self.table.row(idx)
+            available = True
+            for key in keys:
+                value = filters[key]
+                if value:
+                    if is_callable:
+                        available = value(idx, row)
+                    elif is_regex:
+                        available = bool(value.match(row[key]))
+                    else:
+                        available = row[key] == value
+                    if not available:
+                        break
+                else:
+                    available = False
+                    break
+
+            if available:
+                if dict_key:
+                    output[row[dict_key]] = idx
+                else:
+                    output.append(idx)
+
+        return output
