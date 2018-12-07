@@ -19,50 +19,52 @@ class FieldValueGroupCollection(object):
         self.table = table
         self.collections = {}
 
-    def create_collection(self, field, name=None, value=None):
+    def create_collection(self, name, **kwargs):
         """
-        :param field: 테이블에 반드시 포함되어 있어야 한다.
-        :type  field: string
-
-        :param name: 콜렉션의 이름을 준다. 안 주면 필드값으로 준다. 한 필드에 여러 콜렉션을 생성하고 싶으면 이름으로 구분한다.
+        :param name: 콜렉션의 이름
         :type  name: string
 
-        :param value: 값은 None, 스칼라값, 정규식, 호출 가능한 객체 중 하나.
-                      None 이면 값의 종류별로 모두 골라낸다.
-                      정규식은 re.compile() 된 객체이며 .match() 메소드를 통해 매칭되어야 한다.
-                      호출 가능한 객체는 객체의 호출 값에 대해 수집 여부를 조사한다. True/False 리턴해야 한다.
-                      스칼라값은 해당 값만을 가지도록 한다.
+        :param kwargs: 키는 테이블에 정의된 필드 이름,
+                       값은 None, 스칼라값, 정규식, 호출 가능한 객체 중 하나.
+                       None 이면 값의 종류별로 모두 골라낸다.
+                       정규식은 re.compile() 된 객체이며 .match() 메소드를 통해 매칭되어야 한다.
+                       호출 가능한 객체는 객체의 호출 값에 대해 수집 여부를 조사한다. True/False 리턴해야 한다.
+                       스칼라값은 해당 값만을 가지도록 한다.
         """
-        if field not in self.table.headers():
-            raise Exception('Keys does not match to the table.')
+        keys = sorted(kwargs.keys())
+        for key in keys:
+            if key not in self.table.headers():
+                raise Exception('Keys does not match to the table.')
 
         collection = {}
+        is_callable = {}
+        is_regex = {}
 
-        is_callable = isinstance(value, FunctionType) or isinstance(value, LambdaType)
-        is_regex = isinstance(value, _pattern_type)
+        for key in keys:
+            value = kwargs[key]
+            is_callable[key] = isinstance(value, FunctionType) or isinstance(value, LambdaType)
+            is_regex[key] = isinstance(value, _pattern_type)
 
         for idx, row in enumerate(self.table):
-            if value:
-                if is_callable:
-                    v = row[field]
-                    collectible = value(idx, row)
-                elif is_regex:
-                    v = row[field]
-                    collectible = bool(value.match(v))
-                else:
-                    v = value
-                    collectible = row[field] == v
-            else:
-                v = row[field]
-                collectible = True
+            collectible = True
+
+            for key in keys:
+                value = kwargs[key]
+                if value:
+                    if is_callable:
+                        collectible = value(idx, row)
+                    elif is_regex:
+                        collectible = bool(value.match(v))
+                    else:
+                        collectible = row[key] == value
+                    if not collectible:
+                        break
 
             if collectible:
-                if v not in collection:
-                    collection[v] = []
-                collection[v].append(idx)
-
-        if name is None:
-            name = field
+                key = '-'.join(['%s:%s' % (k, row[k]) for k in keys])
+                if key not in collection:
+                    collection[key] = []
+                collection[key].append(idx)
 
         self.collections[name] = collection
 
