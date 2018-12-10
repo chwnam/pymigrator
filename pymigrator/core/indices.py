@@ -116,7 +116,7 @@ class FieldIndex(object):
         return result
 
     def filter_index(self, name, filters, dict_key=None):
-        intersect = self.get_index(name, filters.keys())
+        intersect = self.get_index(name, *filters.keys())
 
         is_callable = {}
         is_regex = {}
