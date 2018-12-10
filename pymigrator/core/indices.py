@@ -86,9 +86,9 @@ class FieldIndex(object):
             for key in keys:
                 value = kwargs[key]
                 if value:
-                    if is_callable:
+                    if is_callable[key]:
                         index_available = value(idx, row)
-                    elif is_regex:
+                    elif is_regex[key]:
                         index_available = bool(value.match(row[key]))
                     else:
                         index_available = row[key] == value
