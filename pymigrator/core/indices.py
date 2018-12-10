@@ -136,9 +136,9 @@ class FieldIndex(object):
             available = True
             for key, value in filters.items():
                 if value:
-                    if is_callable:
+                    if is_callable[key]:
                         available = value(idx, row)
-                    elif is_regex:
+                    elif is_regex[key]:
                         available = bool(value.match(row[key]))
                     else:
                         available = row[key] == value
