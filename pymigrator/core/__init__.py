@@ -29,7 +29,7 @@ def parse_datetime(input_data, parse_format):
 
     try:
         d = datetime.strptime(input_data, parse_format)
-        output = d.strftime('%y-%m-%d %H:%M:%S')
+        output = d.strftime('%Y-%m-%d %H:%M:%S')
     except ValueError:
         pass
 
