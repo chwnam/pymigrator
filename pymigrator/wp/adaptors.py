@@ -749,3 +749,235 @@ class TermRelationShipsAdaptor(BaseAdaptor):
             'term_taxonomy_id',
             'term_order',
         ]
+
+
+class CommentsAdaptor(BaseAdaptor):
+    @property
+    def comment_id(self):
+        return self.dict_obj['comment_ID']
+
+    @comment_id.setter
+    def comment_id(self, value):
+        self.dict_obj['comment_ID'] = value
+
+    @property
+    def comment_post_id(self):
+        return self.dict_obj['comment_post_ID']
+
+    @comment_post_id.setter
+    def comment_post_id(self, value):
+        self.dict_obj['comment_post_ID'] = value
+
+    @property
+    def comment_author(self):
+        return self.dict_obj['comment_author']
+
+    @comment_author.setter
+    def comment_author(self, value):
+        self.dict_obj['comment_author'] = value
+
+    @property
+    def comment_author_email(self):
+        return self.dict_obj['comment_author_email']
+
+    @comment_author_email.setter
+    def comment_author_email(self, value):
+        self.dict_obj['comment_author_email'] = value
+
+    @property
+    def comment_author_url(self):
+        return self.dict_obj['comment_author_url']
+
+    @comment_author_url.setter
+    def comment_author_url(self, value):
+        self.dict_obj['comment_author_url'] = value
+
+    @property
+    def comment_author_ip(self):
+        return self.dict_obj['comment_author_IP']
+
+    @comment_author_ip.setter
+    def comment_author_ip(self, value):
+        self.dict_obj['comment_author_IP'] = value
+
+    @property
+    def comment_date(self):
+        return self.dict_obj['comment_date']
+
+    @comment_date.setter
+    def comment_date(self, value):
+        self.dict_obj['comment_date'] = value
+
+    @property
+    def comment_date_gmt(self):
+        return self.dict_obj['comment_date_gmt']
+
+    @comment_date_gmt.setter
+    def comment_date_gmt(self, value):
+        self.dict_obj['comment_date_gmt'] = value
+
+    @property
+    def comment_content(self):
+        return self.dict_obj['comment_content']
+
+    @comment_content.setter
+    def comment_content(self, value):
+        self.dict_obj['comment_content'] = value
+
+    @property
+    def comment_karma(self):
+        return self.dict_obj['comment_karma']
+
+    @comment_karma.setter
+    def comment_karma(self, value):
+        self.dict_obj['comment_karma'] = value
+
+    @property
+    def comment_approved(self):
+        return self.dict_obj['comment_approved']
+
+    @comment_approved.setter
+    def comment_approved(self, value):
+        self.dict_obj['comment_approved'] = value
+
+    @property
+    def comment_agent(self):
+        return self.dict_obj['comment_agent']
+
+    @comment_agent.setter
+    def comment_agent(self, value):
+        self.dict_obj['comment_agent'] = value
+
+    @property
+    def comment_type(self):
+        return self.dict_obj['comment_type']
+
+    @comment_type.setter
+    def comment_type(self, value):
+        self.dict_obj['comment_type'] = value
+
+    @property
+    def comment_parent(self):
+        return self.dict_obj['comment_parent']
+
+    @comment_parent.setter
+    def comment_parent(self, value):
+        self.dict_obj['comment_parent'] = value
+
+    @property
+    def user_id(self):
+        return self.dict_obj['user_id']
+
+    @user_id.setter
+    def user_id(self, value):
+        self.dict_obj['user_id'] = value
+
+    @classmethod
+    def get_header(cls):
+        return [
+            'comment_ID',
+            'comment_post_ID',
+            'comment_author',
+            'comment_author_email',
+            'comment_author_url',
+            'comment_author_IP',
+            'comment_date',
+            'comment_date_gmt',
+            'comment_content',
+            'comment_karma',
+            'comment_approved',
+            'comment_agent',
+            'comment_type',
+            'comment_parent',
+            'user_id',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'comment_ID'
+
+    @classmethod
+    def get_default_values(cls):
+        return dict(
+            zip(
+                cls.get_header(),
+                [
+                    0,  # comment_ID
+                    0,  # comment_post_ID
+                    '',  # comment_author
+                    '',  # comment_author_email
+                    '',  # comment_author_url
+                    '',  # comment_author_IP
+                    '0000-00-00 00:00:00',  # comment_date
+                    '0000-00-00 00:00:00',  # comment_date_gmt
+                    '',  # comment_content
+                    0,  # comment_karma
+                    1,  # comment_approved
+                    '',  # comment_agent
+                    '',  # comment_type
+                    0,  # comment_parent
+                    1,  # user_id
+                ]
+            )
+        )
+
+
+class CommentMetaAdaptor(BaseAdaptor):
+    @property
+    def meta_id(self):
+        return self.dict_obj['meta_id']
+
+    @meta_id.setter
+    def meta_id(self, value):
+        self.dict_obj['meta_id'] = value
+
+    @property
+    def comment_id(self):
+        return self.dict_obj['comment_id']
+
+    @comment_id.setter
+    def comment_id(self, value):
+        self.dict_obj['comment_id'] = value
+
+    @property
+    def meta_key(self):
+        return self.dict_obj['meta_key']
+
+    @meta_key.setter
+    def meta_key(self, value):
+        self.dict_obj['meta_key'] = value
+
+    @property
+    def meta_value(self):
+        return self.dict_obj['meta_value']
+
+    @meta_value.setter
+    def meta_value(self, value):
+        self.dict_obj['meta_value'] = value
+
+    @classmethod
+    def get_header(cls):
+        return [
+            'meta_id',
+            'comment_id',
+            'meta_key',
+            'meta_value',
+        ]
+
+    @classmethod
+    def get_ai_field(cls):
+        return 'meta_id'
+
+    @classmethod
+    def get_default_values(cls):
+        return zip(
+            dict(
+                cls.get_header(),
+                [
+                    '0',
+                    '0',
+                    '',
+                    ''
+                ]
+            )
+        )
