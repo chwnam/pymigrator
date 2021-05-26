@@ -1,2 +1,2 @@
-PyMySQL3==0.5
-pytz
+PyMySQL==1.0.2
+pytz==2021.1

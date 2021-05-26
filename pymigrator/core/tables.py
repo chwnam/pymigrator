@@ -229,7 +229,7 @@ class DictTable(Table):
         q = 'SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=\'{}\' AND TABLE_NAME=\'{}\' ' + \
             'ORDER BY ORDINAL_POSITION'
 
-        return q.format(pymysql.escape_string(db), pymysql.escape_string(table))
+        return q.format(pymysql.converters.escape_string(db), pymysql.converters.escape_string(table))
 
     def get_value_count(self, field_name, value):
         if field_name not in self.header:
