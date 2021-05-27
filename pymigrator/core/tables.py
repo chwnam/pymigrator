@@ -260,7 +260,7 @@ class DictTable(Table):
 
         values_list = []
         for row in self:
-            cols = [pymysql.escape_string(str(row[field])) for field in fields]
+            cols = [pymysql.converters.escape_string(str(row[field])) for field in fields]
             values_list.append('({})'.format(','.join(['\'%s\'' % col.replace('\'', '\'\'') for col in cols])))
         values_text = ','.join(values_list)
 
