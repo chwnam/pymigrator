@@ -177,7 +177,7 @@ class DictTable(Table):
 
         return table
 
-    def save_csv(self, file_name, export_header=False, stream=sys.stdout):
+    def save_csv(self, file_name, export_header=False, stream=sys.stdout, **kwargs):
         """
         :param file_name: output csv file name. UTF-8 encoding only.
         :param export_header:
@@ -186,7 +186,15 @@ class DictTable(Table):
         :return:
         """
         with open(file_name, 'w') as f:
-            writer = csv.DictWriter(f, fieldnames=self.header, delimiter=',', quotechar='"')
+            writer = csv.DictWriter(
+                f,
+                fieldnames=self.header,
+                delimiter=kwargs['delimiter'] if 'delimiter' in kwargs else ',',
+                quotechar=kwargs['quotechar'] if 'quotechar' in kwargs else '"',
+                doublequote=kwargs['doublequote'] if 'doublequote' in kwargs else True,
+                lineterminator=kwargs['lineterminator'] if 'lineterminator' in kwargs else '\n',
+                escapechar=kwargs['escapechar'] if 'escapechar' in kwargs else '"'
+            )
             if export_header:
                 writer.writerow(dict(zip(self.header, self.header)))
             writer.writerows(self.content)
