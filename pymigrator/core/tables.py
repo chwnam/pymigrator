@@ -337,3 +337,28 @@ class AutoIncrementDictTable(DictTable, AutoIncrementMixin):
             result.append(current)
 
         return result
+
+    @staticmethod
+    def load_csv(file_name, ai_field, ai_begin=None, include_header=True, header=None, filter_null=True, table_name='',
+                 encoding='utf-8'):
+
+        table = DictTable.load_csv(
+            file_name=file_name,
+            include_header=include_header,
+            header=header,
+            filter_null=filter_null,
+            table_name=table_name,
+            encoding=encoding
+        )
+
+        obj = AutoIncrementDictTable(
+            header=header,
+            ai_field=ai_field,
+            table_name=table_name,
+        )
+        obj.__dict__.update(table.__dict__)
+
+        if not ai_begin:
+            obj.next_id = int(table.row(-1)[ai_field]) + 1
+
+        return obj
